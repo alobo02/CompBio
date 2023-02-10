@@ -72,19 +72,19 @@ TC-CAAATAGAC
 TCGCAAATATAC
 ```
 
-### Example 3
+### Example 2
 ```sh
 python3 align.py < tests/input/aligntest.input1 > tests/output/my.output1
 ```
 Same as example 1, except the output is printed to tests/output/my.output1
 
-### Example 4
+### Example 3
 ```sh
 python3 align.py -M 3 -m -2 -g -2 < tests/input/aligntest.input2 > tests/output/my.output2
 ```
 Specifies a custom scoring scheme that is different from all default values
 
-### Example 5
+### Example 4
 ```sh
 python3 align.py --match_score 4 --gap_penalty -1 < tests/input/aligntest.input3 > tests/output/my.output3
 ```
