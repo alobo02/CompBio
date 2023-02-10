@@ -207,10 +207,10 @@ class GlobalSequenceAlignment:
                 y_stack.append(self.y[j])
                 j -= 1
 
-        x_aligned = ''.join(x_stack[::-1])
-        y_aligned = ''.join(y_stack[::-1])
+        x_prime = ''.join(x_stack[::-1])
+        y_prime = ''.join(y_stack[::-1])
 
-        return (x_aligned, y_aligned)
+        return (x_prime, y_prime)
 
 
 def parse_FASTA_file(fasta_fh: typing.IO) -> tuple[str, str]:
