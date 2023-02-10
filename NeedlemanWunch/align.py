@@ -183,8 +183,8 @@ class GlobalSeqAlignment:
         """Traces back through the pointer matrix (P) to determine the optimal
         global alignment.
 
-        Builds a stack of both sequences in reverse order until either string
-        index reaches zero.
+        Builds a stack of both sequences in reverse order until both string
+        indexes reach zero.
 
         Returns
         -------
