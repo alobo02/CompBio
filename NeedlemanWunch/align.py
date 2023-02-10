@@ -41,6 +41,9 @@ aligments to
 Usage Examples
 --------------
 $ python3 align.py < tests/input/aligntest.input1 > tests/output/my.output1
+TC-CAAATAGAC
+TCGCAAATATAC
+
 $ python3 align.py -M 3 -m -2 -g -2 < tests/input/aligntest.input2 > tests/output/my.output2
 $ python3 align.py --match_score 4 --gap_penalty -1 < tests/input/aligntest.input3 > tests/output/my.output3
 
@@ -247,6 +250,12 @@ if __name__ == "__main__":
     M = args.match_score
     m = args.mismatch_score
     g = args.gap_penalty
+
+    if not m > 2*g:
+        raise argparse.ArgumentTypeError(
+            'The mismatch score [-m, --mismatch_score] '
+            'must be greater than 2 times the gap penalty [-g, --gap_penalty].',
+        )
 
     # FASTA
     x, y = parse_FASTA_file(sys.stdin)
