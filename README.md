@@ -1,2 +1,2 @@
 # CompBio
-Repo for computational biology packages and algorithms
+Computational biology packages and algorithms
