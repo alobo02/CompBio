@@ -61,12 +61,32 @@ Specifying the output file is optional. If it is not specified, then the sequenc
 alignments will be printed to the terminal.
 
 ## Examples
+### Example 1
+```sh
+python3 align.py < tests/input/aligntest.input1 > tests/output/my.output1
+```
+The following will be printed to the terminal:
 ```sh
 python3 align.py < tests/input/aligntest.input1
 TC-CAAATAGAC
 TCGCAAATATAC
+```
 
+### Example 3
+```sh
 python3 align.py < tests/input/aligntest.input1 > tests/output/my.output1
+```
+Same as example 1, except the output is printed to tests/output/my.output1
+
+### Example 4
+```sh
 python3 align.py -M 3 -m -2 -g -2 < tests/input/aligntest.input2 > tests/output/my.output2
+```
+Specifies a custom scoring scheme that is different from all default values
+
+### Example 5
+```sh
 python3 align.py --match_score 4 --gap_penalty -1 < tests/input/aligntest.input3 > tests/output/my.output3
 ```
+Specifies a custom scoring scheme where the match and gap penalty is different
+from the default, but the use of the default mismatch score is implied.

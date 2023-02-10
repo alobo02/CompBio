@@ -84,7 +84,7 @@ class GlobalSequenceAlignment:
         M : float, optional
             Match score, by default 4
         m : float, optional
-            Mismatch penalty, by default -2
+            Mismatch score, by default -2
         g : float, optional
             Linear gap penalty, by default -2
         """
@@ -105,14 +105,14 @@ class GlobalSequenceAlignment:
 
         # Initialize alignment (A) matrix
         A = np.zeros((m_dim, n_dim))
-        A[:, 0] = np.arange(0, g*m_dim, g) # First column gap scores
-        A[0, :] = np.arange(0, g*n_dim, g) # First row gap scores
+        A[:, 0] = np.arange(0, g*m_dim, g)  # First column gap scores
+        A[0, :] = np.arange(0, g*n_dim, g)  # First row gap scores
         self.A = A
 
         # Initialize pointer (P) matrix
         P = np.zeros((m_dim, n_dim))
-        P[1:, 0] = 2 # First column always points "up"
-        P[0, 1:] = 3 # First row always points "left"
+        P[1:, 0] = 2  # First column always points "up"
+        P[0, 1:] = 3  # First row always points "left"
         self.P = P
 
         # Compute matrix scores
