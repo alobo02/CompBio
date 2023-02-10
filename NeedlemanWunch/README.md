@@ -90,3 +90,10 @@ python3 align.py --match_score 4 --gap_penalty -1 < tests/input/aligntest.input3
 ```
 Specifies a custom scoring scheme where the match and gap penalty is different
 from the default, but the use of the default mismatch score is implied.
+
+## Testing
+The unit testing framework can be run with the following terminal command from
+any parent directory of `NeedlemanWunch/tests`:
+```sh
+pytest
+```
