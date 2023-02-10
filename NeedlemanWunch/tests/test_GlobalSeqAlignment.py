@@ -26,7 +26,7 @@ from NeedlemanWunch import align
     ],
 )
 def test_get_optimal_alignment(x, y, expected):
-    a_align = align.GlobalSequenceAlignment(x=x, y=y)
+    a_align = align.GlobalSeqAlignment(x=x, y=y)
     assert a_align.get_optimal_alignment() == expected
 
 

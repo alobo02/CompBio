@@ -7,7 +7,7 @@ scheme with a linear gap penalty:
 * g for each gap
 
 The module can either be imported as a package to use the
-GlobalSequenceAlignment class and class methods or run directly from the command
+GlobalSeqAlignment class and class methods or run directly from the command
 line.
 
 Command Line Usage
@@ -57,13 +57,13 @@ import argparse
 import numpy as np
 
 
-class GlobalSequenceAlignment:
+class GlobalSeqAlignment:
     """An object-oriented instance of an alignment than can be used to find
     the optimal global alignment of two sequences.
 
     Usage Examples
     --------------
-    >>> align = GlobalSequenceAlignment(x='ABC', y='AC', M=4, m=-2, g=-2)
+    >>> align = GlobalSeqAlignment(x='ABC', y='AC', M=4, m=-2, g=-2)
     >>> align.get_optimal_alignment()
     ('ABC', 'A-C')
     """
@@ -76,7 +76,7 @@ class GlobalSequenceAlignment:
         m: float = -2,
         g: float = -2
     ) -> None:
-        """Instantiates an instance of the GlobalSequenceAlignment class.
+        """Instantiates an instance of the GlobalSeqAlignment class.
 
         Parameters
         ----------
@@ -280,5 +280,5 @@ if __name__ == "__main__":
     x, y = parse_FASTA_file(sys.stdin)
 
     # Class, method, and print
-    align = GlobalSequenceAlignment(x=x, y=y, M=M, m=m, g=g)
+    align = GlobalSeqAlignment(x=x, y=y, M=M, m=m, g=g)
     print(*align.get_optimal_alignment(), sep='\n')
