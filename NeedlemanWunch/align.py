@@ -134,8 +134,12 @@ class GlobalSequenceAlignment:
         """Updates the score of the alignment matrix at A(i,j) using the
         scoring scheme.
 
-        Also updated the pointer matrix at P(i,j) to indicate which direction
-        was used to compute the score
+        Also updates the pointer matrix at P(i,j) to indicate which direction
+        was used to compute the score, where
+        * 1 = Diagonal traceback
+        * 2 = Upward traceback
+        * 3 = Left traceback
+        with ties resolved in that order.
 
         Parameters
         ----------
@@ -144,12 +148,14 @@ class GlobalSequenceAlignment:
         j : int
             Alignment matrix column index
         """
+        # Alignment
         cases = [
             self.A[i-1, j-1] + self._score(self.x[i], self.y[j]),
             self.A[i-1, j] + self.g,
             self.A[i, j-1] + self.g
         ]
         self.A[i, j] = max(cases)
+        # Pointer
         self.P[i, j] = np.argmax(cases) + 1
 
     def _score(self, x_i: str, y_j: str) -> float:
@@ -185,28 +191,32 @@ class GlobalSequenceAlignment:
         tuple[str, str]
             Optimal alignment pair of both sequences
         """
+        # Set starting indexes (1 less than dimensions)
         i = self.m_dim-1
         j = self.n_dim-1
 
+        # Initialize stacks to build alignments
         x_stack = []
         y_stack = []
 
+        # Loop until both sequences have been built
         while i > 0 or j > 0:
             pointer = self.P[i, j]
-            if pointer == 1:
+            if pointer == 1:  # diagonal traceback
                 x_stack.append(self.x[i])
                 y_stack.append(self.y[j])
                 i -= 1
                 j -= 1
-            elif pointer == 2:
+            elif pointer == 2:  # upward traceback
                 x_stack.append(self.x[i])
                 y_stack.append('-')
                 i -= 1
-            elif pointer == 3:
+            elif pointer == 3:  # leftward traceback
                 x_stack.append('-')
                 y_stack.append(self.y[j])
                 j -= 1
 
+        # Reverse stack order so that it matches direction of input alignments
         x_prime = ''.join(x_stack[::-1])
         y_prime = ''.join(y_stack[::-1])
 
@@ -215,6 +225,9 @@ class GlobalSequenceAlignment:
 
 def parse_FASTA_file(fasta_fh: typing.IO) -> tuple[str, str]:
     """Reads an input FASTA file to determine the input sequences to be aligned.
+
+    Considers that comment lines start with '>' and that sequences, if long 
+    enough, can extend multiple lines.
 
     Parameters
     ----------
@@ -226,13 +239,19 @@ def parse_FASTA_file(fasta_fh: typing.IO) -> tuple[str, str]:
     tuple[str, str]
         Pair of raw sequences to be processed
     """
+    # Initialize data structure to hold both sequences and index
     x_y = [[], []]
     i = -1
+
+    # Read FASTA line by line
     for line in fasta_fh.readlines():
-        if line.startswith('>'):
-            i += 1
+        if line.startswith('>'):  # Comment line
+            i += 1  # skip and increment index
         else:
+            # append string to respective list in x_y
             x_y[i].append(line.rstrip())
+
+    # Merge strings into single string for each sequence and store in tuple
     x_y = tuple(map(lambda z: ''.join(z), x_y))
     return x_y
 
@@ -260,6 +279,6 @@ if __name__ == "__main__":
     # FASTA
     x, y = parse_FASTA_file(sys.stdin)
 
-    # Class & Method
+    # Class, method, and print
     align = GlobalSequenceAlignment(x=x, y=y, M=M, m=m, g=g)
     print(*align.get_optimal_alignment(), sep='\n')
