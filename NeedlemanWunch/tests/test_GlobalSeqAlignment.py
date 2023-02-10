@@ -6,6 +6,28 @@ import os
 import pytest
 import filecmp
 import pathlib
+from NeedlemanWunch import align
+
+
+@pytest.mark.parametrize(
+    "x, y, expected",
+    [
+        ('ABC', 'ABC', ('ABC', 'ABC')),
+        ('ABC', 'AB', ('ABC', 'AB-')),
+        ('ABC', 'A', ('ABC', 'A--')),
+        ('ABC', '', ('ABC', '---')),
+        ('', '', ('', '')),
+        ('A', 'ABC', ('A--', 'ABC')),
+        ('ABCDEF', 'AF', ('ABCDEF', 'A----F')),
+        ('ABCDEF', 'A', ('ABCDEF', 'A-----')),
+        ('ABCDEF', 'F', ('ABCDEF', '-----F')),
+        ('ABCDEF', 'ACF', ('ABCDEF', 'A-C--F')),
+        ('ABCDEF', 'QCWERTY', ('ABCDE--F', '-QCWERTY')),
+    ],
+)
+def test_get_optimal_alignment(x, y, expected):
+    a_align = align.GlobalSequenceAlignment(x=x, y=y)
+    assert a_align.get_optimal_alignment() == expected
 
 
 @pytest.mark.parametrize(
@@ -16,7 +38,7 @@ import pathlib
         ("3"),
     ],
 )
-def test_align(test_case):
+def test_module(test_case):
     module_path = pathlib.Path(__file__).parents[1].joinpath('align.py')
     input_path = pathlib.Path(__file__).parent.joinpath(
         'input', f'aligntest.input{test_case}')
