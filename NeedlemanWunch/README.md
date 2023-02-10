@@ -29,6 +29,11 @@ python3 align.py [args] < [FASTA_input_file] > [output_file]
 
 The following command can be run for more information on arguments:
 ```sh
+python3 align.py -h
+```
+
+Help:
+```sh
 $ python3 align.py -h
 usage: align.py [-h] [-M MATCH_SCORE] [-m MISMATCH_SCORE] [-g GAP_PENALTY]
 
