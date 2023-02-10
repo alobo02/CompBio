@@ -223,7 +223,7 @@ class GlobalSeqAlignment:
         return (x_prime, y_prime)
 
 
-def parse_FASTA_file(fasta_fh: typing.IO) -> tuple[str, str]:
+def parse_FASTA_file(fasta_file: typing.IO) -> tuple[str, str]:
     """Reads an input FASTA file to determine the input sequences to be aligned.
 
     Considers that comment lines start with '>' and that sequences, if long 
@@ -244,7 +244,7 @@ def parse_FASTA_file(fasta_fh: typing.IO) -> tuple[str, str]:
     i = -1
 
     # Read FASTA line by line
-    for line in fasta_fh.readlines():
+    for line in fasta_file:
         if line.startswith('>'):  # Comment line
             i += 1  # skip and increment index
         else:
