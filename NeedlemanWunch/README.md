@@ -19,15 +19,13 @@ python3 align.py [args] < [FASTA_input_file] > [output_file]
 
 ### Arguments
 * [args] can be any of the following arguments:
-  -h, --help            show this help message and exit
-  -M MATCH_SCORE, --match_score MATCH_SCORE
-                        Match score to be used for global alignment, default 4
-  -m MISMATCH_SCORE, --mismatch_score MISMATCH_SCORE
-                        Mismatch score to be used for global alignment, 
-                        default -2
-  -g GAP_PENALTY, --gap_penalty GAP_PENALTY
-                        Linear gap penalty to be used for global alignment,
-                        default, -2
+
+| Argument           | Usage                 | About                                                           |
+| ------------------ | --------------------- | --------------------------------------------------------------- |
+| Help               | -h, --help            | show help message and exit                                      |
+| Match score (M)    | -M, --match_score     | Match score to be used for global alignment, default 4          |
+| Mismatch score (m) | -m, --mismatch_score  | Mismatch score to be used for global alignment, default -2      |
+| Gap penalty (g)    | -g, --gap_penalty     | Linear gap penalty to be used for global alignment, default, -2 |
 
 Run the following command for more information on arguments:
 ```sh
