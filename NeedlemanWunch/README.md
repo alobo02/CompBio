@@ -37,13 +37,20 @@ python3 align.py -h
 * [FASTA_input_file] is the file path of the input file used to import the
 squences to be aligned
 
-### Outputfile
+### Output file
 
 * [output_file] is the desired file path of the file to print the optimal global
 aligments to
 
+Specifying the output file is optional. If it is not specified, then the sequence
+alignments will be printed to the terminal.
+
 ## Examples
 ```sh
+python3 align.py < tests/input/aligntest.input1
+TC-CAAATAGAC
+TCGCAAATATAC
+
 python3 align.py < tests/input/aligntest.input1 > tests/output/my.output1
 python3 align.py -M 3 -m -2 -g -2 < tests/input/aligntest.input2 > tests/output/my.output2
 python3 align.py --match_score 4 --gap_penalty -1 < tests/input/aligntest.input3 > tests/output/my.output3
