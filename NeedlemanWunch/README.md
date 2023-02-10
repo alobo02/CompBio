@@ -13,7 +13,9 @@ line.
 ## Command Line Usage
 The general format of running the module from the command line is as follows:
 
-$ python3 align.py [args] < [FASTA_input_file] > [output_file]
+```sh
+python3 align.py [args] < [FASTA_input_file] > [output_file]
+```
 
 ### Arguments
 * [args] can be any of the following arguments:
@@ -28,7 +30,9 @@ $ python3 align.py [args] < [FASTA_input_file] > [output_file]
                         default, -2
 
 Run the following command for more information on arguments:
-$ python3 align.py -h
+```sh
+python3 align.py -h
+```
 
 ### Input file
 
@@ -41,6 +45,8 @@ squences to be aligned
 aligments to
 
 ## Examples
-$ python3 align.py < tests/input/aligntest.input1 > tests/output/my.output1
-$ python3 align.py -M 3 -m -2 -g -2 < tests/input/aligntest.input2 > tests/output/my.output2
-$ python3 align.py --match_score 4 --gap_penalty -1 < tests/input/aligntest.input3 > tests/output/my.output3
+```sh
+python3 align.py < tests/input/aligntest.input1 > tests/output/my.output1
+python3 align.py -M 3 -m -2 -g -2 < tests/input/aligntest.input2 > tests/output/my.output2
+python3 align.py --match_score 4 --gap_penalty -1 < tests/input/aligntest.input3 > tests/output/my.output3
+```
