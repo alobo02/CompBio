@@ -6,46 +6,32 @@ import os
 import pytest
 import filecmp
 import pathlib
-from NeedlemanWunch import align
+from gibbssampler import gibbs
 
 
 @pytest.mark.parametrize(
-    "x, y, expected",
+    "seed",
     [
-        ('ABC', 'ABC', ('ABC', 'ABC')),
-        ('ABC', 'AB', ('ABC', 'AB-')),
-        ('ABC', 'A', ('ABC', 'A--')),
-        ('ABC', '', ('ABC', '---')),
-        ('', '', ('', '')),
-        ('A', 'ABC', ('A--', 'ABC')),
-        ('ABCDEF', 'AF', ('ABCDEF', 'A----F')),
-        ('ABCDEF', 'A', ('ABCDEF', 'A-----')),
-        ('ABCDEF', 'F', ('ABCDEF', '-----F')),
-        ('ABCDEF', 'ACF', ('ABCDEF', 'A-C--F')),
-        ('ABCDEF', 'QCWERTY', ('ABCDE--F', '-QCWERTY')),
+        (20),
+        (14),
+        (1),
+        (2),
+        (3),
+        (4),
+        (5),
+        (10),
+        (15),
+        (30),
     ],
 )
-def test_get_optimal_alignment(x, y, expected):
-    a_align = align.GlobalSeqAlignment(x=x, y=y)
-    assert a_align.get_optimal_alignment() == expected
-
-
-@pytest.mark.parametrize(
-    "test_case",
-    [
-        ("1"),
-        ("2"),
-        ("3"),
-    ],
-)
-def test_module(test_case):
-    module_path = pathlib.Path(__file__).parents[1].joinpath('align.py')
+def test_module(seed):
+    module_path = pathlib.Path(__file__).parents[1].joinpath('gibbs.py')
     input_path = pathlib.Path(__file__).parent.joinpath(
-        'input', f'aligntest.input{test_case}')
+        'input', 'Gibbs.short.fasta')
     test_output_path = pathlib.Path(__file__).parent.joinpath(
-        'output', f'aligntest.output{test_case}')
+        'output', f'expected_output.seed{seed}')
     my_output_path = pathlib.Path(__file__).parent.joinpath(
-        'output', f'my.output{test_case}')
+        'output', f'output.seed{seed}')
     os.system(
-        f"python3 {module_path} < {str(input_path)} > {str(my_output_path)}")
+        f"python3 {module_path} --seed {seed} < {str(input_path)} > {str(my_output_path)}")
     assert filecmp.cmp(test_output_path, my_output_path)

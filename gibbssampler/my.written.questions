@@ -1,0 +1,66 @@
+5.1 Answer
+----------
+Using seed = 20 (default value), the alorithm obtains the following results:
+
+PSSM :
+[[-0.169925   -0.169925    1.4150375  -1.169925   -1.169925    1.4150375 ]
+ [-1.169925    1.15200309 -1.169925   -1.169925    0.4150375  -1.169925  ]
+ [-1.169925   -1.169925   -1.169925   -1.169925   -1.169925   -1.169925  ]
+ [ 1.15200309 -1.169925   -1.169925    1.4150375   0.830075   -1.169925  ]]
+MSA :
+TCATTA
+TAATTA
+TCATTA
+ACATCA
+TCATCA
+TCATTA
+
+The results of repeated runs using different seeds are not very similar and
+highly depend on the seed used. The main downside to this implementation is
+the chance of an early convergence if an s* is repeated and returns the same
+best position before the rest of the sequences are evaluated as s*. The 
+restriction that the same s* cannot be chosen twice in a row helps avoid this,
+but we are still ask risk of the same s* being chosen two or more iterations 
+after, as is the case when seed=14, and only 3 iterations are conducted before 
+convergence is determined.
+
+
+5.2 Answer
+----------
+As stated above in the 5.1 Answer, the convergence criteria implemented can
+lead to an early termination of the algorithm if s* is repeated and finds the
+same position before the rest of the sequences are withheld as s*. A simple
+improvement to this algorithm is to not just terminate when the best position
+in s* is the same as when it was previously withheld but to terminate when
+every sequence as s* is the same as it was previously witheld. This will ensure
+that every sequence gets withheld as s* at least once before the convergence
+criteria is assessed. In other words, to converge, the algorithm needs to
+withold every sequence as s* at least once, and the positions of s* for every
+sequence needs to be the same as it was when it was previously witheld.
+
+The other issue with this implementation, as can be the case with the typical
+Gibbs Sampling algorithm, is that even when it does properly converge, it could
+at a local maximum. This is evident between the MSAs when the seeds are 20 and 
+15:
+
+seed = 20 MSA :
+TCATTA
+TAATTA
+TCATTA
+ACATCA
+TCATCA
+TCATTA
+
+seed = 15 MSA :
+TCACAC
+TCACAC
+TCGAAC
+TCTAAC
+TCTCCC
+TCAAAT
+
+For each of these seeds, the sequences are witheld at least once, but
+the convergence MSAs are different. This is because we are trying to optimize
+over a non-convex space. An additional improvement would be to run the algorithm
+multiple times, storing the MSA from each time, and return the MSA with the
+best sum-of-pairs score. 

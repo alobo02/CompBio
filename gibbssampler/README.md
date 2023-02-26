@@ -1,100 +1,84 @@
 # Gibbs Sampler
-TODO: redo for Simple Gibbs Sampler
-This module uses the Needleman-Wunch algorithm to determine a global DNA 
-sequence alignment using a simple similarity scoring 
-scheme with a linear gap penalty: 
-* M for each matched pair in the alignment
-* m for each mismatch
-* g for each gap
+This module implements a simplified variant of the Gibbs sampling algorithm to find a 
+common sequence motif.
+
+Unlike the typical algorithm, this variant chooses the best position in s*
+(i.e. the window given a position with the highest score).
 
 The module can either be imported as a package to use the
-GlobalSequenceAlignment class and class methods or run directly from the command
+SimpleGibbsSampler class and class methods or run directly from the command
 line.
 
 ## Command Line Usage
 The general format of running the module from the command line is as follows:
 
 ```sh
-python3 align.py [args] < [FASTA_input_file] > [output_file]
+python3 gibbs.py [args] < [FASTA_input_file] > [output_file]
 ```
 
 ### Arguments
 * [args] can be any of the following arguments:
 
-| Argument           | Usage                 | About                                                           |
-| ------------------ | --------------------- | --------------------------------------------------------------- |
-| Help               | -h, --help            | show help message and exit                                      |
-| Match score (M)    | -M, --match_score     | Match score to be used for global alignment, default 4          |
-| Mismatch score (m) | -m, --mismatch_score  | Mismatch score to be used for global alignment, default -2      |
-| Gap penalty (g)    | -g, --gap_penalty     | Linear gap penalty to be used for global alignment, default, -2 |
+| Argument           | Usage                 | About                                                                          |
+| ------------------ | --------------------- | ------------------------------------------------------------------------------ |
+| Help               | -h, --help            | show help message and exit                                                     |
+| Motif length       | --motif_len           | The fixed motif length, default 6                                              |
+| Alphabet (Language)| --lang                | List characterizing the residue language symbols, default ['A', 'C', 'G', 'T'] |
+| Background prob    | --lang_prob           | Background probability of each residue, typically 1/len(lang) , default 0.25   |
+| Seed               | --seed                | Integer seed for random number generator, default, 20                          |
 
 The following command can be run for more information on arguments:
 ```sh
-python3 align.py -h
+python3 gibbs.py -h
 ```
 
 Help:
 ```sh
 $ python3 align.py -h
-usage: align.py [-h] [-M MATCH_SCORE] [-m MISMATCH_SCORE] [-g GAP_PENALTY]
+usage: gibbs.py [-h] [--motif_len MOTIF_LEN] [--lang LANG [LANG ...]]
+                [--lang_prob LANG_PROB] [--seed SEED]
 
 optional arguments:
   -h, --help            show this help message and exit
-  -M MATCH_SCORE, --match_score MATCH_SCORE
-                        Match score to be used for global alignment
-  -m MISMATCH_SCORE, --mismatch_score MISMATCH_SCORE
-                        Mismatch score to be used for global alignment
-  -g GAP_PENALTY, --gap_penalty GAP_PENALTY
-                        Linear gap penalty to be used for global alignment
+  --motif_len MOTIF_LEN
+                        The fixed motif length
+  --lang LANG [LANG ...]
+                        List characterizing the residue language symbols
+  --lang_prob LANG_PROB
+                        Background probability of each residue, typically 1/len(lang)
+  --seed SEED           Integer seed for random number generator
 ```
 
 ### Input file
 
 * [FASTA_input_file] is the file path of the input file used to import the
-squences to be aligned
+squences to be used to determine the MSA of the best motif.
 
 ### Output file
 
-* [output_file] is the desired file path of the file to print the optimal global
-aligments to
+* [output_file] is the desired file path of the file to print the iteration log to.
 
-Specifying the output file is optional. If it is not specified, then the sequence
-alignments will be printed to the terminal.
+Specifying the output file is optional. If it is not specified, then the logs 
+will be printed to the terminal.
 
 ## Examples
 ### Example 1
 ```sh
-python3 align.py < tests/input/aligntest.input1 > tests/output/my.output1
+python3 gibbs.py < tests/input/Gibbs.short.fasta > tests/output/output.seed20
 ```
-The following will be printed to the terminal:
-```sh
-python3 align.py < tests/input/aligntest.input1
-TC-CAAATAGAC
-TCGCAAATATAC
-```
+Uses the default arguments to determine the MSA of the best motif of the 
+sequences stored in Gibbs.short.fasta
 
 ### Example 2
 ```sh
-python3 align.py < tests/input/aligntest.input1 > tests/output/my.output1
+python3 gibbs.py --motif_len 6 --seed 14 < tests/input/Gibbs.fasta > tests/output/output.seed14
 ```
-Same as example 1, except the output is printed to tests/output/my.output1
-
-### Example 3
-```sh
-python3 align.py -M 3 -m -2 -g -2 < tests/input/aligntest.input2 > tests/output/my.output2
-```
-Specifies a custom scoring scheme that is different from all default values
-
-### Example 4
-```sh
-python3 align.py --match_score 4 --gap_penalty -1 < tests/input/aligntest.input3 > tests/output/my.output3
-```
-Specifies a custom scoring scheme where the match and gap penalty is different
-from the default, but the use of the default mismatch score is implied.
+Explicitly specifies motif length, although it is the same as the default and
+changes to integer used to seed the random number generator to 14.
 
 ## Testing
 The unit testing framework can be run with the following terminal command from
-any parent directory of `NeedlemanWunch/tests`:
+any parent directory of `gibbssampler/tests`:
 ```sh
 pytest
 ```
