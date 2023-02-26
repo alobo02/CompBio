@@ -1,4 +1,4 @@
-# Gibbs Sampler
+# Simple Gibbs Sampler
 This module implements a simplified variant of the Gibbs sampling algorithm to find a 
 common sequence motif.
 
