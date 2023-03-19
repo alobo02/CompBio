@@ -1,0 +1,52 @@
+4.2 Answer
+----------
+N50 Size:
+the N50 size for the assembly is 1113.
+
+The cumulative size of the contigs is 168773. Therefore at N50, at least 
+84,387 base pairs are included, which occurs when the contig size is at least
+1113, when the cumulative sum is 84975.
+
+How much is chaff:
+374 of the contigs are "chaff", which are the number of contigs that have sizes 
+less than 100bp out of those obtained.
+
+
+5.2 Answer
+----------
+The assembler was run with various k values, specifically with
+
+k = (10, 15, 20, 25, 30, 35, 40, 45)
+
+I noticed that generally speaking, the number of contigs obtained from the
+assembler decreased as k increased. This also implies that the graph becomes
+less complicated as k increases.
+
+I also noticed that the number of reads filtered out increased as k increased. 
+In other words, the number of reads that contained k-mers that occured only once 
+increased as k increased. This intuititively makes sense since as the k-mer size 
+increases, the k-mers becomes more and more unique. If a graph is built using k 
+size equal to the typical read size, then every read will most likely get 
+filtered out since they will each be unique. However, this won't be very useful 
+for the assembly. Likewise, if a very small k value is chosen (e.g. k=1), then no 
+reads will be filtered out since the k-mers will become more likely to be repeated 
+in other reads. For example, with k=1, every k-mer will just be a basepair, which 
+will definitely be repeated. Therefore, it can be infered that there is a tradeoff 
+for adjusting k. The k value should be increased so that some reads are filtered out, 
+but not so much that there is no information left to assemble the sequence.
+
+The number of branches in the graph decrease as k increases, which further
+supports the claim that the graph becomes less complicated as k increases. This also
+intuititively makes sense since branches are indications that there are repeat
+k-mers in the reads. As k increases, the chances of repeats reduce since the
+k-mers become more distinct or rare. 
+
+Overall, adjusting the value of k appears to have the effect of changing the
+coverage and complexity of a graph that represents the sequence. At lower values
+of k, we are more likely to obtain more coverage, where the graph is more likely
+to have a path that represents the true sequence that the reads are based of 
+off, with the detriment of having many branches and a complicated graph to
+traverse. Higher values of k have the benefit of obtaining a simpler graph that
+is more straight forward to interpret, with the detriment of filtering out
+reads erroneously. Therefore, if we are guaranteed to have a set of reads with
+no errors, then higher k values would be prefered.

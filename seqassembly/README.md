@@ -1,85 +1,76 @@
 # De Bruijn Graph Sequence Assembly
-TODO: Update README
-This module implements a simplified variant of the Gibbs sampling algorithm to find a 
-common sequence motif.
+This module implements a partial assembly of a DNA sequence given a input of reads.
+Specifically, it will obtain the contigs and contig lengths from a given set
+of reads by building a de Bruijn graph.
 
-Unlike the typical algorithm, this variant chooses the best position in s*
-(i.e. the window given a position with the highest score).
+The program conducts a simple error detection that filters out any reads that
+contains K-mers that occur only once in all reads.
 
 The module can either be imported as a package to use the
-SimpleGibbsSampler class and class methods or run directly from the command
+DeBruijnGraph class and class methods or run directly from the command
 line.
 
 ## Command Line Usage
 The general format of running the module from the command line is as follows:
 
 ```sh
-python3 gibbs.py [args] < [FASTA_input_file] > [output_file]
+python3 assembler.py [args] < [reads_input_file]
 ```
 
 ### Arguments
 * [args] can be any of the following arguments:
 
-| Argument           | Usage                 | About                                                                          |
-| ------------------ | --------------------- | ------------------------------------------------------------------------------ |
-| Help               | -h, --help            | show help message and exit                                                     |
-| Motif length       | --motif_len           | The fixed motif length, default 6                                              |
-| Alphabet (Language)| --lang                | List characterizing the residue language symbols, default ['A', 'C', 'G', 'T'] |
-| Background prob    | --lang_prob           | Background probability of each residue, typically 1/len(lang) , default 0.25   |
-| Seed               | --seed                | Integer seed for random number generator, default, 20                          |
+| Argument             | Usage                 | About                                                                                  |
+| -------------------- | --------------------- | -------------------------------------------------------------------------------------- |
+| Help                 | -h, --help            | show help message and exit                                                             |
+| K-mer length         | --k                   | The length of each k-mer, default 31                                                   |
+| Minimum contig length| --min_length          | Minimum length desired of contigs to be returned, default 0                            |
+| Output directory     | --out_dir             | The desired directory to create output files, by default the current working directory.|
 
 The following command can be run for more information on arguments:
 ```sh
-python3 gibbs.py -h
+python3 assembler.py -h
 ```
 
 Help:
 ```sh
 $ python3 align.py -h
-usage: gibbs.py [-h] [--motif_len MOTIF_LEN] [--lang LANG [LANG ...]]
-                [--lang_prob LANG_PROB] [--seed SEED]
+usage: assembler.py [-h] [--k K] [--min_length MIN_LENGTH] [--output_dir OUTPUT_DIR]
 
 optional arguments:
   -h, --help            show this help message and exit
-  --motif_len MOTIF_LEN
-                        The fixed motif length
-  --lang LANG [LANG ...]
-                        List characterizing the residue language symbols
-  --lang_prob LANG_PROB
-                        Background probability of each residue, typically 1/len(lang)
-  --seed SEED           Integer seed for random number generator
+  --k K                 The length of each k-mer
+  --min_length MIN_LENGTH
+                        Minimum length desired of contigs to be returned
+  --output_dir OUTPUT_DIR
+                        The desired directory to create output files, by default 
+                        the current workingdirectory.
 ```
 
 ### Input file
 
-* [FASTA_input_file] is the file path of the input file used to import the
-squences to be used to determine the MSA of the best motif.
-
-### Output file
-
-* [output_file] is the desired file path of the file to print the iteration log to.
-
-Specifying the output file is optional. If it is not specified, then the logs 
-will be printed to the terminal.
+* [reads_input_file] is the file path of the input file used to import the
+squences reads to assemble the DNA sequence.
 
 ## Examples
 ### Example 1
 ```sh
-python3 gibbs.py < tests/input/Gibbs.short.fasta > tests/output/output.seed20
+python3 assembler.py < tests/input/sequence_reads
 ```
-Uses the default arguments to determine the MSA of the best motif of the 
-sequences stored in Gibbs.short.fasta
+Uses the default arguments to determine the good reads, contigs, and contig 
+lengths. Outputs each as a text file to the current working directory
 
 ### Example 2
 ```sh
-python3 gibbs.py --motif_len 6 --seed 14 < tests/input/Gibbs.fasta > tests/output/output.seed14
+python3 assembler.py --k 31 --min_length 100 --output_dir ./tests/output < tests/input/sequence_reads
 ```
-Explicitly specifies motif length, although it is the same as the default and
-changes to integer used to seed the random number generator to 14.
+Explicitly specifies K-mer length, although it is the same as the default and
+the desired minimum contig length which is now 100. Also specifies a directory
+for output files.
 
 ## Testing
 The unit testing framework can be run with the following terminal command from
-any parent directory of `gibbssampler/tests`:
+any parent directory of `assembler/tests`:
 ```sh
 pytest
 ```
