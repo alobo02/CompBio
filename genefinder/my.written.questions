@@ -1,0 +1,24 @@
+5.2 Answer
+----------
+There are 3 different reading frames in the viral genome to compare against the
+spike protein sequence. So, when we look at the plot, we see 3 different lines
+for the difference distances trends, one for each possible reading frame.
+Incrementing a single codon in the same reading frame will not drastically 
+change the difference distance of the window, which is why we see rateable
+changes, represented as lines, for each reading frame.
+
+
+5.3 Answer
+----------
+I think that at approximately window position 25000, the gene encoding for for the spike
+protein most likely starts. It is at this position that we observe the lowest
+average difference distances for all three reading frames. Unlike in all the
+previous window positions, there is a fluctuation between low and high difference
+distances. One of the reading frame start at a much lower difference distance
+than the other two and stay lower from about window position 0 to 12,500.
+After that, two of the frames swap trends, with one going low and the other
+going high. However, these fluctuations indicate that nothing can be concretely
+said about the start of the gene encoding. However, at position 25000 (or a bit
+earlier) and onwards, we see that all three of the reading frames trend to a relatively
+low difference distance, which indicates that the gene encoding most likely
+starts here.
